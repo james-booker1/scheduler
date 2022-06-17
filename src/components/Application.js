@@ -1,76 +1,47 @@
-import React, {useState} from "react";
-
+import React, { useState, useEffect } from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
-import "components/Appointment"
+import "components/Appointment";
 import Appointment from "components/Appointment";
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-
-const appointments = {
-  "1": {
-    id: 1,
-    time: "12pm",
-  },
-  "2": {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer:{
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  "3": {
-    id: 3,
-    time: "2pm",
-  },
-  "4": {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer:{
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
-  },
-  "5": {
-    id: 5,
-    time: "4pm",
-  }
-};
+import axios from "axios";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 export default function Application(props) {
-const [value, onChange] = useState("Monday")
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+    interviewers: {},
+  });
 
-console.log(value)
-const mapAppointments = Object.values(appointments).map((item) => (
-  <Appointment key={item.id} {...item} />)
-)
+  const dailyAppointments = getAppointmentsForDay(state, state.day).map(
+    (app) => {
+      const interview = getInterview(state, app.interview);
+      return (
+        <Appointment
+          key={app.id}
+          id={app.id}
+          time={app.time}
+          interview={interview}
+        />
+      );
+    }
+  );
+  const setDay = (day) => setState({ ...state, day });
 
+  useEffect(() => {
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ]).then((all) => {
+      const days = all[0].data;
+      const appointments = all[1].data;
+      const interviewers = all[2].data;
+      setState((prev) => ({ ...prev, days, appointments, interviewers }));
+    });
+  }, []);
 
   return (
     <main className="layout">
@@ -82,11 +53,7 @@ const mapAppointments = Object.values(appointments).map((item) => (
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={days}
-            day={value}
-            setDay={onChange}
-          />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
@@ -94,9 +61,7 @@ const mapAppointments = Object.values(appointments).map((item) => (
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule" >
-        {mapAppointments}
-      </section>
+      <section className="schedule">{dailyAppointments}</section>
     </main>
   );
 }
