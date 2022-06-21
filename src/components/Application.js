@@ -1,26 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
 import "components/Appointment";
 import Appointment from "components/Appointment";
-import axios from "axios";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "helpers/selectors";
+import useApplicationData from "hooks/useApplicationData";
 
 
 export default function Application(props) {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {},
-  });
-const interviewers = getInterviewersForDay(state, state.day)
+  const {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
+
+
+  const interviewers = getInterviewersForDay(state, state.day);
+  
   const dailyAppointments = getAppointmentsForDay(state, state.day).map(
     (app) => {
-      const interview = getInterview(state, app.interview)
-        
+      const interview = getInterview(state, app.interview);
+
       return (
         <Appointment
           key={app.id}
@@ -28,24 +35,14 @@ const interviewers = getInterviewersForDay(state, state.day)
           time={app.time}
           interview={interview}
           interviewers={interviewers}
+          bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
         />
       );
     }
   );
-  const setDay = (day) => setState({ ...state, day });
-
-  useEffect(() => {
-    Promise.all([
-      axios.get("/api/days"),
-      axios.get("/api/appointments"),
-      axios.get("/api/interviewers"),
-    ]).then((all) => {
-      const days = all[0].data;
-      const appointments = all[1].data;
-      const interviewers = all[2].data;
-      setState((prev) => ({ ...prev, days, appointments, interviewers }));
-    });
-  }, []);
+ 
+  
 
   return (
     <main className="layout">
