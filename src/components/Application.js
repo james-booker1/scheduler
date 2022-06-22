@@ -12,18 +12,12 @@ import {
 } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
-
 export default function Application(props) {
-  const {
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  } = useApplicationData();
-
+  const { state, setDay, bookInterview, cancelInterview } =
+    useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
-  
+
   const dailyAppointments = getAppointmentsForDay(state, state.day).map(
     (app) => {
       const interview = getInterview(state, app.interview);
@@ -41,8 +35,6 @@ export default function Application(props) {
       );
     }
   );
- 
-  
 
   return (
     <main className="layout">
@@ -62,10 +54,10 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{dailyAppointments}
-       <Appointment key="last" time="5pm"/>
+      <section className="schedule">
+        {dailyAppointments}
+        <Appointment key="last" time="5pm" />
       </section>
-     
     </main>
   );
 }

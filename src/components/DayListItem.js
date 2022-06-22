@@ -9,7 +9,7 @@ export default function DayListItem(props) {
       : "" || spots === 1
       ? "1 spot"
       : "" || spots >= 2
-      ?`${spots} spots`
+      ? `${spots} spots`
       : "";
   };
 
@@ -18,7 +18,11 @@ export default function DayListItem(props) {
     "day-list__item--full": !props.spots,
   });
   return (
-    <li className={dayClass} onClick={() => props.setDay(props.name)} data-testid="day">
+    <li
+      className={dayClass}
+      onClick={() => props.setDay(props.name)}
+      data-testid="day"
+    >
       <h2 className="text--regular">{props.name}</h2>
       <h3 className="text--light">{formatSpots(props.spots)} remaining</h3>
     </li>

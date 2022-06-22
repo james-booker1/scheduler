@@ -25,14 +25,4 @@ export function getInterviewersForDay(state, day) {
   return dayObj.interviewers.map((id) => state.interviewers[id]);
 } 
 
-// export function getInterviewersForDay(state, day) {
-//   const dayList = state.days.filter((d) => d.name === day);
 
-//   if (dayList.length === 0) {
-//     return [];
-//   }
-//   const filteredList = dayList[0].interviewers.map(
-//     (d) => state.interviewers[d]
-//   );
-//   return filteredList;
-// }
