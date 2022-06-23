@@ -43,4 +43,4 @@ npm run storybook
 ```
 ## Screenshots
 
-https://github.com/james-booker1/scheduler/blob/master/public/docs/scheduler.gif?raw=true
+!["Gif of schduler function"](https://github.com/james-booker1/scheduler/blob/master/public/docs/scheduler.gif?raw=true)
