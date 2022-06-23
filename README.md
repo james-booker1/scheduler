@@ -42,3 +42,5 @@ npm test
 npm run storybook
 ```
 ## Screenshots
+
+https://github.com/james-booker1/scheduler/blob/master/public/docs/scheduler.gif?raw=true
