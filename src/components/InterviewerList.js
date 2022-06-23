@@ -3,6 +3,8 @@ import InterviewerListItem from "./InterviewerListItem";
 import "./InterviewerList.scss"
 import PropTypes from "prop-types"
 
+
+//Manages the interviewers on the selction form
  function InterviewerList(props) {
   
   const {value, onChange, interviewers} = props

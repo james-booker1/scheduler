@@ -2,6 +2,8 @@ import React from "react";
 import "components/DayListItem.scss";
 import classNames from "classnames";
 
+//Manages the day toggles in the schedule
+
 export default function DayListItem(props) {
   const formatSpots = (spots) => {
     return spots === 0

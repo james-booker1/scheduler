@@ -9,6 +9,7 @@ import Error from "./Error";
 import Confirm from "./Confirm";
 
 export default function Appointment(props) {
+  //Save function when submitting form.
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -20,7 +21,7 @@ export default function Appointment(props) {
       .then(() => transition(SHOW))
       .catch(() => transition(ERROR_SAVE, true));
   }
-
+  //Deletes saved interview.
   function deleteInterview(name, interviewer) {
     const interview = {
       student: name,

@@ -3,21 +3,28 @@ import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
 
 export default function Form(props) {
-  const { interviewers, onCancel, onSave } = props;
+  const { interviewers, onCancel } = props;
 
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
+
+  //Resets inputs
 
   let reset = () => {
     setError("");
     setStudent("");
     setInterviewer(null);
   };
+
+  //Cancel button
+
   let cancel = () => {
     reset();
     onCancel();
   };
+
+  //Checks student and interviewer are filled in
 
   function validate() {
     if (student === "") {
